@@ -1,10 +1,10 @@
-var ground;
-var paper;
+var world;
+var dustbinObj, paperObject,groundObject
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
-
+const Render = Matter.Render;
 function preload()
 {
 	
@@ -12,32 +12,41 @@ function preload()
 
 function setup() {
 	createCanvas(800, 700);
-
+	rectMode(CENTER);
 
 	engine = Engine.create();
 	world = engine.world;
 
 	//Create the Bodies Here.
+	dustbinObj=new dustbin(1200,650);
+	paperObject=new paper(200,450,40);
+	groundObject=new ground(width/2,670,width,20);
 
-
+	var render = Render.create({
+		element: document.body,
+		engine: engine,
+		options: {
+		  width: 1200,
+		  height: 700,
+		  wireframes: false}});
+	
 	Engine.run(engine);
-	groundSprite=createSprite(width/2, height-35, width,10);
-	groundSprite.shapeColor=color(255)
-	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
-	World.add(world, ground);
+
 }
 
 
 function draw() {
   rectMode(CENTER);
   background(0);
+  dustbinObj.display();
+  paperObject.display();
+  groundObject.display();
   
-  drawSprites();
  
 }
 function keyPressed() {
 	if (keyCode === UP_ARROW) {
-  Matter.Body.translate(paperobject.body,paperobject.body.postion,{x:85,y:-85});
+		Matter.Body.applyForce(paperObject.body,paperObject.body.position,{x:85,y:-85});
   
   
 	}}
